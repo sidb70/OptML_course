@@ -1,0 +1,517 @@
+%cut and past into a LaTeX editor to experiment with.
+\documentclass[10pt]{article}
+
+%preamble
+
+%packages
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathrsfs}	%for \mathscr{} script
+\usepackage{amssymb}
+\usepackage{amscd}
+\usepackage{setspace}	%Pro­vides sup­port for set­ting the spac­ing be­tween lines in a doc­u­ment with the \sin­glespac­ing, \one­half­s­pac­ing, and \dou­blespac­ing com­mands. Other size spac­ings also avail­able.
+\usepackage{centernot} 
+\usepackage{tikz}		%graph drawing
+\usepackage{tikz-cd}
+\usetikzlibrary{matrix}	%diagram drawing using tik
+\usepackage{verbatim}
+
+\usepackage{graphicx}	%insert images
+\graphicspath{ {pics/} }	%local image folder
+\usepackage{wrapfig}	%figure wrapping for text around pictures
+\usepackage{enumerate}	%to get enumerate to use roman numerals [i], [I], [i.], [i)], [(i)]
+\usepackage{multicol}	%to get multiple columns in enumerate \begin{multicol}{#of columns}
+\usepackage{bbm}		%to get blackboard 1 \mathbbm{1}
+%\usepackage{hyperref}
+\usepackage{pdfpages}	%\includepdf[page={page numbers}]{file name}
+
+\usepackage[utf8]{inputenc}	% for chapters, theorems and proofs
+\usepackage[english]{babel}	% for theorems
+\usepackage{blindtext}		% for chapters
+\usepackage[affil-it]{authblk}	%for affiliation
+
+\usepackage{faktor}			%for modding out stuff command \faktor{n}{d} left
+\usepackage{xparse}			%for the macro \rfactor below right
+\DeclareDocumentCommand{\rfaktor}{m O{-0.5} m O{0.5}}{% \rfaktor{#1}[#2]{#3}[#4] -> #1/#3
+  	\raisebox{#2\height}{\ensuremath{#1}}% Denominator
+ 	 \mkern-5mu\diagdown\mkern-4mu% Slash /
+ 	 \raisebox{#4\height}{\ensuremath{#3}}% Numerator
+	}
+\usepackage{cancel} %for diagonal strikethrough of math. Command: \cancel{}. more at https://jansoehlke.com/2010/06/strikethrough-in-latex/
+\usepackage[normalem]{ulem} 	%for horizontal strikethrough of text. Command: \sout{}. 
+\usepackage[colorlinks,citecolor=red,urlcolor=blue,bookmarks=false,hypertexnames=true]{hyperref}
+
+\usepackage{xparse}
+
+%my shortcuts
+\newcommand{\ds}{\displaystyle}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}   					%absolute value
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}					%norm
+\newcommand{\tnorm}[1]{\left\lvert\lvert\lvert#1\right\rvert\rvert\rvert}		%tripple bar norm
+\newcommand{\iso}{\cong}									%isomorphism symbol 
+\newcommand{\lrangle}[1]{\left\langle#1\right\rangle}					%langle rangle
+\newcommand{\opint}[1]{\left(#1\right)}							%auto parentheses size
+\newcommand{\clint}[1]{\left[#1\right]}							%auto brackets size
+\newcommand{\mychi}{\raisebox{1pt}[1ex][1ex]{$\chi$}}				%fix chi bad subscripts
+\newcommand{\set}[1]{\left\{#1\right\}}		 					%auto curlys 
+\newcommand{\spanset}[1]{\text{span}\left\{#1\right\}}	
+\newcommand{\maxset}[1]{\text{max}\left\{#1\right\}}					%auto curlys on max
+\newcommand{\minset}[1]{\text{min}\left\{#1\right\}}					%auto curlys on min
+\newcommand{\cu}[1]{C_u^*\left(#1\right)}							%uniform roe algebra
+\newcommand{\cualg}[2]{\mathbb{C}_u^{#1}\left[#2\right]} 			% algebraic uniform roe algebra
+\newcommand{\wot}{\text{\scriptsize{WOT-}}}						%weak/Pettis integral
+\newcommand{\sub}{\subseteq}
+\newcommand{\super}{\supseteq}
+\newcommand{\h}{\hspace{.1 in}}								%horizontal spacing 
+\newcommand{\cl}[1]{\overline{#1}}								%overline
+\newcommand{\os}[2]{\overset{#1}{#2}}							%overset
+\newcommand{\cs}{\overset{\text{C-S}}{\leq}}
+\newcommand{\clmap}[1]{(\overline{\mathcal{A}})^{#1} \to \mathcal{V}}
+\newcommand{\RN}[1]{\textup{\uppercase\expandafter{\romannumeral#1}}}	%Roman Numerals in math mode
+\newcommand{\hmod}[2]{\left\langle#1\vert#2\right\rangle}
+\newcommand{\divides}{\bigm|}
+\newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
+
+\DeclareMathOperator{\Dom}{Dom}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\gra}{gra}
+\DeclareMathOperator{\Inv}{Inv}
+\DeclareMathOperator{\dd}{d}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\res}{Res}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\commut}{Commut}
+\DeclareMathOperator{\Lip}{Lip}
+\DeclareMathOperator{\Int}{Int}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\tr}{Tr}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\range}{range}
+\DeclareMathOperator{\nul}{null}
+\DeclareMathOperator{\dimm}{dim}
+\DeclareMathOperator{\ind}{ind}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\ev}{ev}
+
+
+
+%typeset commands
+\newcommand{\QQ}{\mathbf{Q}}		%mathbf
+\newcommand{\RR}{\mathbf{R}}
+\newcommand{\CC}{\mathbf{C}}
+%\newcommand{\FF}{\mathbf{F}}
+%\newcommand{\GG}{\mathbf{G}}
+
+
+\newcommand{\N}{\mathbb{N}}			%mathbb
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\one}{\mathbbm{1}}
+
+		
+\newcommand{\BB}{\mathscr{B}} 	%mathscr
+\newcommand{\DD}{\mathscr{D}} 
+\newcommand{\GG}{\mathscr{G}} 
+\newcommand{\KK}{\mathfrak{K}}
+\newcommand{\LL}{\mathscr{L}}
+%\newcommand{\l}{\mathscr{l}}
+\newcommand{\MM}{\mathscr{M}}  
+\newcommand{\NN}{\mathscr{N}}
+
+
+
+\newcommand{\A}{\mathcal{A}} 	%mathcal
+\newcommand{\HH}{\mathcal{H}} 		
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\ZZ}{\mathcal{Z}}
+\newcommand{\EE}{\mathcal{E}}
+\newcommand{\NNN}{\mathcal{N}}
+\newcommand{\UU}{\mathcal{U}} 
+\newcommand{\VV}{\mathcal{V}}
+\newcommand{\WW}{\mathcal{W}}
+
+\newcommand{\domain}[1]{\mathbf{dom}(#1)}
+\NewDocumentCommand{\innerprod}{ m m }{\left\langle #1, #2 \right\rangle}
+
+%-1	\part{part}
+%0	\chapter{chapter}
+%1	\section{section}
+%2	\subsection{subsection}
+%3	\subsubsection{subsubsection}
+%4	\paragraph{paragraph}
+%5	\subparagraph{subparagraph}
+%\part and \chapter are only available in report and book document classes.
+\newtheorem{theorem}{Theorem}[section]     
+% The command \newtheorem{theorem}{Theorem} has two parameters, the first one is the name of the environment that is defined, the second one is the word that will be printed, in boldface font, at the beginning of the environment. This has the additional parameter [section] that restarts the theorem counter at every new section.
+\newtheorem{corollary}[theorem]{Corollary}
+% A environment called corollary is created, the counter of this new environment will be reset every time a new theorem environment is used.
+\newtheorem{lemma}[theorem]{Lemma}
+% In this case, the even though a new environment called lemma is created, it will use the same counter as the theorem environment.
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{fact}{Fact (\textcolor{red}{need to prove})}[theorem]
+
+\theoremstyle{remark}
+% The command \theoremstyle{ } sets the styling for the numbered environment defined right below it.
+\newtheorem{remark}[theorem]{Remark}
+% The syntax of the command \newtheorem* is the same as the non-starred version, except for the counter parameters. In this example a new unnumbered environment called remark is created.
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{trick}[theorem]{Trick}
+
+\onehalfspacing
+
+\begin{document}	
+
+
+
+\subsection{High Level Overview}
+General unconstrained minimization problem:
+\begin{equation}
+	\min_{x \in \R^d} f(x)
+\end{equation} 
+\begin{itemize}
+	\item $x \in \R^d$ refers to candidate solutions, variables, or parameters. $\R^d$ is the domain.
+	\item $f: \R^d \to \R$ is the objective function.
+	\item typical assumptions: $f$ is continuous and differentiable.
+\end{itemize}
+
+\subsubsection{How to Optimize}
+Two main steps:\\
+\textbf{Mathematical Modeling}: Defining \& modeling the optimization problem.\\
+\textbf{Computational Optimization}: Running an (approximate) optimization algorithm.
+
+\section{Theory of Convex Optimization}
+\subsection{Warm-up: Cauchy-Schwarz Inequality}
+\begin{theorem}[Cauchy-Schwarz Inequality]
+	Let $u, v \in \R^d$. Then 
+	\begin{equation}
+		\innerprod{u}{v}^2 \leq \norm{u}^2 \norm{v}^2
+	\end{equation}
+	Equivalently, 
+	\begin{equation}
+		\abs{\innerprod{u}{v}} \leq \norm{u} \norm{v}
+	\end{equation}
+	\noindent where $\innerprod{\cdot}{\cdot}$ is the standard Euclidean dot product. 
+
+	For nonzero $u,v$, this is equivalent to 
+	\begin{equation}
+		-1 \leq \frac{\innerprod{u}{v}}{\norm{u} \norm{v}} \leq 1
+	\end{equation}
+	So, the angle $\alpha$ between $u$ and $v$ is given by $\cos(\alpha) = \frac{\innerprod{u}{v}}{\norm{u} \norm{v}}$.
+	Thus, equality holds in (2) if and only if $u$ and $v$ are scalar multiples of each other.
+\end{theorem}
+
+\subsection{What is Convexity? Convex Sets and Functions}
+\begin{definition}
+	A set $C$ is a \textbf{convex set} if the line segment between any two points of $C$ lies entirely in $C$.
+	Formally, for any $x,y \in C$ and $0 \leq \lambda \leq 1$, we have 
+	\begin{equation}
+		\lambda x + (1-\lambda)y \in C
+	\end{equation}
+\end{definition}
+\begin{prop}
+	Intersections of convex sets are convex.
+\end{prop}
+\begin{remark}
+	Unions of convex sets are not necessarily convex.
+\end{remark}
+\begin{prop}[later: projections onto convex sets]
+	\[ P_C(x') = \arg\min_{y \in C} \norm{y - x'} \]
+\end{prop}
+
+
+\begin{definition}
+	A function $f: \R^d \to \R$ is a \textbf{convex function} if
+	\begin{enumerate}
+		\item \textbf{dom}$(f)$ is a convex set
+		\item for all $x,y \in \text{dom}(f)$ and $0 \leq \lambda \leq 1$, we have 
+		\begin{equation}
+			f(\lambda x + (1-\lambda)y) \leq \lambda f(x) + (1-\lambda)f(y)
+		\end{equation}
+	\end{enumerate}
+	Geometrically: the line segment connecting $(x,f(x))$ and $(y,f(y))$ lies above the graph of $f$.
+\end{definition}
+
+\subsection{Proving Convexity}
+Convex optimization problems are of the form 
+\begin{equation}
+	\min f(x) \text{  s.t.  } x \in C
+\end{equation}
+where both $f$ is a convex function and $C\subseteq \text{dom}(f)$ is a convex set.\\
+
+Crucial property of convex optimization problems: every local minimum is a global minimum. 
+
+\subsubsection{Solving Convex Optimization -- Provably}
+For convex optimization problems, all algorithms 
+\begin{itemize}
+	\item coordinate descent, gradient descent, SGD, projected and proximal gradient descent
+\end{itemize}
+\noindent do converge to the global optimum! (assuming $f$ is differentiable)
+
+\begin{definition}
+	A \textbf{graph} of a function $f: \R^d \to \R$ is defined as 
+	\[ \{ (x, f(x)) \in \R^{d+1} \mid x \in \text{dom}(f) \} \]
+\end{definition}
+\begin{definition}
+	The \textbf{epigraph} of a function $f: \R^d \to \R$ is defined as
+	\[ \text{epi}(f) = \{ (x,\alpha) \in \R^{d+1} \mid x \in \text{dom}(f), \alpha \geq f(x) \} \]
+	Visually, the epigraph is the set of points above the graph of $f$.
+\end{definition}
+\begin{prop}
+	A function $f: \R^d \to \R$ is convex if and only if its epigraph is a convex set.
+\end{prop}
+\begin{proof}
+	First, let $f: \R^d \to \R$ be a convex function. Then, for any 
+	$x,y \in \text{dom}(f)$ and $0 \leq \lambda \leq 1$, we have
+	\[ f(\lambda x + (1-\lambda)y) \leq \lambda f(x) + (1-\lambda)f(y) \]
+	Thus, for any $(x, \alpha), (y, \beta) \in \text{epi}(f)$ and $0 \leq \lambda \leq 1$, we have
+	\[ f(\lambda x + (1-\lambda)y) \leq \lambda f(x) + (1-\lambda)f(y) \leq \lambda \alpha + (1-\lambda)\beta \]
+	Therefore, $(\lambda x + (1-\lambda)y, \lambda \alpha + (1-\lambda)\beta) \in \text{epi}(f)$, so $\text{epi}(f)$ is convex.\\
+
+	For the converse, suppose that \text{epi}$(f)$ is convex. Let $x,y \in \text{dom}(f)$ and $0 \leq \lambda \leq 1$.
+	We know that $(x,f(x)), (y,f(y)) \in \text{epi}(f)$ by definition of the epigraph (let $\alpha = f(x)$ and $\beta = f(y)$).
+	By the convvexity of $\text{epi}(f)$, any convex combination of $x,y$ is also in $\text{epi}(f)$. 
+
+	So, the convex combination $(\lambda x + (1-\lambda)y, \lambda f(x)+ (1-\lambda)f(y)) \in \text{epi}(f)$.
+	Therefore, by the definition of $\text{epi}(f)$,
+	\[ f(\lambda x + (1-\lambda)y) \leq \lambda f(x) + (1-\lambda)f(y) \]
+	\noindent and thus, $f$ is convex.
+\end{proof}
+
+\begin{example}
+	Examples of convex functions:
+	\begin{itemize}
+		\item Linear functions: $f(x) = a^Tx$
+		\item Affine functions: $f(x) = a^Tx + b$
+		\item Exponential functions: $f(x) = e^{ax}$
+		\item Norms: every norm on $\R^d$ is convex
+	\end{itemize}
+\end{example}
+\begin{proof}
+	Proof of convexity of norms:
+
+	By the triangle inequality, $\norm{x+y} \leq \norm{x} + \norm{y}$ and homogeneity of a 
+	norm, $\norm{\lambda x} = \abs{\lambda} \norm{x}$, we have that for any $x,y \in \R^d$ and $0 \leq \lambda \leq 1$,
+	\begin{align*}
+		\norm{\lambda x + (1-\lambda)y} & \leq \norm{\lambda x} + \norm{(1-\lambda)y}\\
+		&= \abs{\lambda} \norm{x} + \abs{1-\lambda} \norm{y}\\
+		&= \lambda \norm{x} + (1-\lambda) \norm{y}
+	\end{align*}
+\end{proof}
+\begin{lemma}[Jensen's Inequality]
+	Let $f$ be convex, $x_1, \ldots, x_m \in \domain{f}$, 
+	$\lambda_1, \ldots, \lambda_m \in \R_{\geq 0}$ such that $\sum_{i=1}^m \lambda_i = 1$. Then
+	\begin{equation}
+		f\left(\sum_{i=1}^m \lambda_i x_i\right) \leq \sum_{i=1}^m \lambda_i f(x_i)
+	\end{equation}
+	 
+\end{lemma}
+\begin{proof}
+	First, since $f$ is convex, we have that for any $x,y \in \domain{f}$ 
+	and $0 \leq \lambda \leq 1$, 
+	\[ f(\lambda x + (1-\lambda)y) \leq \lambda f(x) + (1-\lambda)f(y) \]
+	We proceed by induction. For the base case, let $k=2$ and $0 \leq \lambda_1, \lambda_2$ 
+	such that $\lambda_1 + \lambda_2 = 1$. Note that this implies $\lambda_2 = 1-\lambda_1$. 
+
+	\begin{align*}
+		f\left(\sum_{i=1}^2 \lambda_i x_i\right) =& f(\lambda_1 x_1 + \lambda_2 x_2)\\
+		=& f(\lambda_1 x_1 + (1-\lambda_1)x_2)  
+	\end{align*}
+	Next, since $f$ is convex,
+	\begin{align*}
+		f(\lambda_1 x_1 + (1-\lambda_1)x_2)   \leq \lambda_1 f(x_1) + (1-\lambda_1)f(x_2)
+	\end{align*}
+	Now, substituting $\lambda_2 = (1-\lambda_1)$, we get that 
+	\begin{align*}
+		f(\lambda_1 x_1 + \lambda_2x_2)\leq \lambda_1 f(x_1) + \lambda_2f(x_2)
+	\end{align*}
+	So, (8) holds for $k=2$. Now, suppose for induction that (8) holds for an 
+	arbitrary $k \geq 2$. We show that it holds for $k+1$. Let 
+	$1 = \sum_{i=1}^{k+1}\lambda_i$. If we let $\beta = \sum_{i=1}^{k}\lambda_i$, 
+	then $\lambda_{k+1} = 1-\beta$. Using this, we can rewrite 
+	the convex combination $\sum_{i=1}^{k+1} \lambda_i x_i$ as:
+	\begin{align*}
+		\sum_{i=1}^{k+1}\lambda_i x_i =& \beta \left(\sum_{i=1}^k \frac{\lambda_i}{\beta} x_i \right)+ \lambda_{k+1}x_{k+1}\\
+		=& \beta \left(\sum_{i=1}^k \frac{\lambda_i}{\beta} x_i \right)+ (1-\beta)x_{k+1}\\
+	\end{align*}
+	And since $f$ is convex, 
+	\begin{align*}
+		f\left(\beta \left(\sum_{i=1}^k \frac{\lambda_i}{\beta} x_i \right)+ ( 1 - \beta)x_{k+1}\right) \leq& \beta f\left(\sum_{i=1}^k \frac{\lambda_i}{\beta}x_i\right) + (1-\beta)f(x_{k+1})\\
+	\end{align*}
+	And by inductive hypothesis on the first $k$ terms, we know that 
+	$f\left(\sum_{i=1}^k \frac{\lambda_i}{\beta} x_i\right) \leq \sum_{i=1}^k \frac{\lambda_i}{\beta} f(x_i)$,
+	which is a valid convex combination, since we defined $\beta = \sum_{i=1}^k \lambda_i$, implying that 
+	$\sum_{i=1}^k\frac{\lambda_i}{\beta} = \frac{\sum_{i=1}^k\lambda_i}{\beta} = \frac{\beta}{\beta }=1$.
+
+	Thus, 
+	\begin{align*}
+		\beta f\left(\sum_{i=1}^k \frac{\lambda_i}{\beta}x_i\right) + (1-\beta)f(x_{k+1}) \leq \beta \left(\sum_{i=1}^k\frac{\lambda_i}{\beta}f(x_i) \right)+ (1-\beta)f(x_{k+1})
+	\end{align*}
+	And by the definition of the convex combination, $ \beta \left(\sum_{i=1}^k\frac{\lambda_i}{\beta}f(x_i) \right)+ (1-\beta)f(x_{k+1})= \sum_{i=1}^{k+1}\lambda_i f(x_i)$, we are done.
+\end{proof}
+\begin{remark}
+	For $m=2$, Jensen's inequality reduces to the definition of convexity. Jensen's inequality is 
+	a general definition for convex combinations of any number of points in the domain. 
+\end{remark}
+
+\begin{lemma}
+	Let $f$ be convex and suppose that $\domain{f}$ is open. Then 
+	$f$ is continuous.
+\end{lemma}
+
+\subsection{Characterizations of Convexity}
+\begin{definition}[Differentiable Functions]
+	Graph of the affine function $f(x) + \nabla f(x)^T(y-x)$ is a tangent hyperplan 
+	to the graph of $f$ at $(x,f(x))$.
+\end{definition}
+
+\begin{lemma}[First-order Characterization of Convexity]
+	Suppose that $\domain{f}$ is open and $f$ is differentiable; in 
+	particular, the gradient (vector of partial derivatives)
+	\[ \nabla f(x) := \left[ \frac{\partial f}{\partial x_1}(x), \ldots, \frac{\partial f}{\partial x_d}(x) \right] \]
+	exists at ever point $x \in \domain{f}$. Then $f$ is convex if and only if 
+	$\domain{f}$ is convex and 
+	\begin{equation}
+		f(y) \geq f(x) + \nabla f(x)^T(y-x)
+	\end{equation}
+	holds for all $x,y \in \domain{f}$.
+\end{lemma}
+
+\begin{lemma}[Second-order Characterization of Convexity]
+	Suppose that $\domain{f}$ is open and $f$ is twice differentiable; 
+	In particular, the Hessian (matrix of second partial derivatives)
+	\[ \nabla^2 f(x) := \begin{bmatrix}
+		\frac{\partial^2 f}{\partial x_1^2}(x) & \cdots & \frac{\partial^2 f}{\partial x_1 \partial x_d}(x)\\
+		\vdots & \ddots & \vdots\\
+		\frac{\partial^2 f}{\partial x_d \partial x_1}(x) & \cdots & \frac{\partial^2 f}{\partial x_d^2}(x)
+	\end{bmatrix}
+	\]
+	exists at every point $x \in \domain{f}$ and is symmetric. Then $f$ is 
+	convex if and only if for all $x \in \domain{f}$, we have 
+	\begin{equation}
+		\nabla^2 f(x) \succeq 0 \;\; \text{i.e.} \nabla^2 f(x) \text{is positive semidefinite}
+	\end{equation}
+	Recall that a matrix $A$ is positive semidefinite if for all $z \in \R^d$, we have
+	$z^TAz \geq 0$. 
+
+	Connection to positive operators. Let us regard the hessian matrix $A$ as the matrix representation of a linear operator 
+	$T \in \mathcal{L}(V)$, i.e. $A= M(T,B)$ for some basis $B$ of $\R^d$. Then.
+	$f$ is convex if and only if $T$ is a positive operator, i.e. $\innerprod{Tx}{x} \geq 0$ for all $x \in \R^d$ and 
+	$T$ is self adjoint (by definition of the Hessian). So, $\innerprod{Tx}{x} = x^TAx$.
+\end{lemma}
+
+\begin{example}
+	Let $f(x_1, x_2) = x_1^2 + x_2^2$. Then, $\nabla^2 f(x) = \begin{bmatrix}
+		2 & 0\\
+		0 & 2
+	\end{bmatrix}$. Which is positive semidefinite, so $f$ is convex.
+\end{example}
+
+\subsubsection{Operations that Preserve Convexity}
+\begin{lemma}
+	Let $f_1, f_2, \ldots, f_m$ be convex functions and $\lambda_1, \ldots, \lambda_m \in \R_+$. Then 
+	$ f := \sum_{i=1}^m\lambda_i f_i$ is convex on $\domain{f} := \bigcap_{i=1}^m \domain{f_i}$.
+\end{lemma}
+\begin{lemma}
+	Let $f$ be a convex function with $\domain{f} \subseteq \R^d$ and let 
+	$g: \R^m \to \R^d$ be an affine function, meaning that $g(x) = Ax+b$ for some 
+	matrix $A \in \R^{d \times m}$ and $b \in \R^d$. Then the function $f \circ g$
+	(that maps $x \to f(Ax+b)$) is convex on $\domain{f \circ g}:= \{x \in \R^m : g(x) \in \domain{f}\}$.
+\end{lemma}
+
+\subsection{Local Minima are Global Minima}
+\begin{definition}
+	A \textbf{local minimum} of $f : \domain{f} \to \R$ is a point $x$ such that 
+	there exists $\epsilon >0$ with 
+	\begin{equation}
+		f(x) \leq f(x) \forall y \in \domain{f} \text{ satisfying} \norm{y-x} \leq \epsilon
+	\end{equation}
+\end{definition}
+
+\begin{lemma}
+	Let $x^*$ be be a local minimum of a convex function $f: \domain{f} \to \R$. 
+	Then $x^*$ is a global minimum, meaning that $f(x^*) \leq f(y) \forall y \in \domain{f}$.
+\end{lemma}
+\begin{proof}
+	Let $x^*$ be a local minimum to a convex function $f$. Then suppose for 
+	contradiction that there exists another $y \in \domain{f}$ such that 
+	$f(y) < f(x^*)$.
+
+	Then let $y' = \lambda y + (1-\lambda)x^*$ for some $0 < \lambda < 1$.
+	Since $f(y) < f(x^*)$, it follos that $\lambda f(y) + (1-\lambda)f(x^*) < f(x^*)$,
+	so $f(y') < f(x^*)$. Now we show that $y'$ is within the $\epsilon$-neighborhood of $x^*$.
+	Recall that by  the definition of a local minimum, there exists $\epsilon >0$ such that
+	$f(x^*) \leq f(x) \forall x \in \domain{f}$ satisfying $\norm{x-x^*} \leq \epsilon$.
+	
+	For any $\epsilon >0$, we may choose a small enough $\lambda $ such 
+	that $\norm{y'-x^*} \leq \epsilon$. First, let us expand the norm of $y'-x^*$:
+	\begin{align*}
+		\norm{y'-x^*} =& \norm{\lambda y + (1-\lambda)x^* - x^*}\\
+		=& \norm{\lambda y - \lambda x^*}\\
+		=& \lambda \norm{y-x^*}\\
+	\end{align*}
+	Now, if we let $\lambda = \frac{\epsilon}{\norm{y-x^*}} >0$ (since $y\neq x^*$), then 
+	\begin{align*}
+		\norm{y'-x^*} =& \frac{\epsilon}{\norm{y-x^*}}\norm{y-x^*}\\
+		=& \epsilon
+	\end{align*}
+	Thus, $f(y') \leq f(x^*)$ and $\norm{y'-x^*} \leq \epsilon$, which contradicts 
+	the assumption that $x^*$ is a local minimum.
+\end{proof}
+
+\begin{lemma}[Critical Points are Global Minima]
+Suppose that $f$ is convex and differentiable over an open domain $\domain{f}$.
+Let $x \in \domain{f}$. If $\nabla f(x) =0$ (\textbf{critical point}), then 
+$x$ is the global minimum.
+\end{lemma}
+\begin{proof}
+Suppose that $\nabla f(x) =0$. According to the lemme on the 
+first-order characterization of convexity, we have that
+\[ f(y) \geq f(x) + \nabla f(x)^T(y-x) = f(x) \]
+\noindent for all $y \in \domain{f}$. Thus, $x$ is a global minimum.
+\end{proof}
+
+\subsection{Strict Convexity}
+\begin{definition}
+	A function $f: \domain{f} \to \R$ is \textbf{strictly convex} if 
+	for all $x \neq y \in \domain{f}$ and all $\lambda \in (0,1)$, we have
+	\begin{equation}
+		f(\lambda x + (1-\lambda)y) < \lambda f(x) + (1-\lambda)f(y)
+	\end{equation}
+	This differs from the definition of convexity in that the inequality is strict.
+\end{definition}
+\begin{lemma}
+	If $f$ is strictly convex, then $f$ has at most one global minimum.
+\end{lemma}
+\subsection{Constrained Minimization}
+\begin{definition}
+	Let $f: \domain{f} \to \R$ be convex and let $X \subseteq \domain{f}$ denote 
+	the constraint (or feasible) set.  
+	be a convex set. A point $x \in X$ is a \textbf{minimizer} of $f$  \textbf{over} $X$ if 
+	\[ f(x) \leq f(y) \forall y \in X \]
+\end{definition}
+\begin{lemma}
+	Suppose that $f: \domain{f} \to \R$ is convex and differentiable over 
+	an open domain $\domain{f} \subseteq \R^d$, and let $X \subseteq \domain{f}$ 
+	be a convex set. A point $x^* \in X$ is a \textbf{minimizer of $\mathbf{f}$ over $\mathbf{X}$} if and only if
+	\begin{equation}
+		\nabla f(x^*)^T(x-x^*) \geq 0 \; \; \forall x \in X
+	\end{equation}
+\end{lemma}
+\end{document}

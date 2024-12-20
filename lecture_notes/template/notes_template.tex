@@ -1,0 +1,184 @@
+%cut and past into a LaTeX editor to experiment with.
+\documentclass[10pt]{article}
+
+%preamble
+
+%packages
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{mathrsfs}	%for \mathscr{} script
+\usepackage{amssymb}
+\usepackage{amscd}
+\usepackage{setspace}	%Pro­vides sup­port for set­ting the spac­ing be­tween lines in a doc­u­ment with the \sin­glespac­ing, \one­half­s­pac­ing, and \dou­blespac­ing com­mands. Other size spac­ings also avail­able.
+\usepackage{centernot} 
+\usepackage{tikz}		%graph drawing
+\usepackage{tikz-cd}
+\usetikzlibrary{matrix}	%diagram drawing using tik
+\usepackage{verbatim}
+
+\usepackage{graphicx}	%insert images
+\graphicspath{ {pics/} }	%local image folder
+\usepackage{wrapfig}	%figure wrapping for text around pictures
+\usepackage{enumerate}	%to get enumerate to use roman numerals [i], [I], [i.], [i)], [(i)]
+\usepackage{multicol}	%to get multiple columns in enumerate \begin{multicol}{#of columns}
+\usepackage{bbm}		%to get blackboard 1 \mathbbm{1}
+%\usepackage{hyperref}
+\usepackage{pdfpages}	%\includepdf[page={page numbers}]{file name}
+
+\usepackage[utf8]{inputenc}	% for chapters, theorems and proofs
+\usepackage[english]{babel}	% for theorems
+\usepackage{blindtext}		% for chapters
+\usepackage[affil-it]{authblk}	%for affiliation
+
+\usepackage{faktor}			%for modding out stuff command \faktor{n}{d} left
+\usepackage{xparse}			%for the macro \rfactor below right
+\DeclareDocumentCommand{\rfaktor}{m O{-0.5} m O{0.5}}{% \rfaktor{#1}[#2]{#3}[#4] -> #1/#3
+  	\raisebox{#2\height}{\ensuremath{#1}}% Denominator
+ 	 \mkern-5mu\diagdown\mkern-4mu% Slash /
+ 	 \raisebox{#4\height}{\ensuremath{#3}}% Numerator
+	}
+\usepackage{cancel} %for diagonal strikethrough of math. Command: \cancel{}. more at https://jansoehlke.com/2010/06/strikethrough-in-latex/
+\usepackage[normalem]{ulem} 	%for horizontal strikethrough of text. Command: \sout{}. 
+\usepackage[colorlinks,citecolor=red,urlcolor=blue,bookmarks=false,hypertexnames=true]{hyperref}
+
+\usepackage{xparse}
+
+%my shortcuts
+\newcommand{\ds}{\displaystyle}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}   					%absolute value
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}					%norm
+\newcommand{\tnorm}[1]{\left\lvert\lvert\lvert#1\right\rvert\rvert\rvert}		%tripple bar norm
+\newcommand{\iso}{\cong}									%isomorphism symbol 
+\newcommand{\lrangle}[1]{\left\langle#1\right\rangle}					%langle rangle
+\newcommand{\opint}[1]{\left(#1\right)}							%auto parentheses size
+\newcommand{\clint}[1]{\left[#1\right]}							%auto brackets size
+\newcommand{\mychi}{\raisebox{1pt}[1ex][1ex]{$\chi$}}				%fix chi bad subscripts
+\newcommand{\set}[1]{\left\{#1\right\}}		 					%auto curlys 
+\newcommand{\spanset}[1]{\text{span}\left\{#1\right\}}	
+\newcommand{\maxset}[1]{\text{max}\left\{#1\right\}}					%auto curlys on max
+\newcommand{\minset}[1]{\text{min}\left\{#1\right\}}					%auto curlys on min
+\newcommand{\cu}[1]{C_u^*\left(#1\right)}							%uniform roe algebra
+\newcommand{\cualg}[2]{\mathbb{C}_u^{#1}\left[#2\right]} 			% algebraic uniform roe algebra
+\newcommand{\wot}{\text{\scriptsize{WOT-}}}						%weak/Pettis integral
+\newcommand{\sub}{\subseteq}
+\newcommand{\super}{\supseteq}
+\newcommand{\h}{\hspace{.1 in}}								%horizontal spacing 
+\newcommand{\cl}[1]{\overline{#1}}								%overline
+\newcommand{\os}[2]{\overset{#1}{#2}}							%overset
+\newcommand{\cs}{\overset{\text{C-S}}{\leq}}
+\newcommand{\clmap}[1]{(\overline{\mathcal{A}})^{#1} \to \mathcal{V}}
+\newcommand{\RN}[1]{\textup{\uppercase\expandafter{\romannumeral#1}}}	%Roman Numerals in math mode
+\newcommand{\hmod}[2]{\left\langle#1\vert#2\right\rangle}
+\newcommand{\divides}{\bigm|}
+\newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
+
+\DeclareMathOperator{\Dom}{Dom}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\gra}{gra}
+\DeclareMathOperator{\Inv}{Inv}
+\DeclareMathOperator{\dd}{d}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\spec}{Spec}
+\DeclareMathOperator{\res}{Res}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\diam}{diam}
+\DeclareMathOperator{\commut}{Commut}
+\DeclareMathOperator{\Lip}{Lip}
+\DeclareMathOperator{\Int}{Int}
+\DeclareMathOperator{\rk}{rk}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\tr}{Tr}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\codim}{codim}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\range}{range}
+\DeclareMathOperator{\nul}{null}
+\DeclareMathOperator{\dimm}{dim}
+\DeclareMathOperator{\ind}{ind}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\ev}{ev}
+
+
+
+%typeset commands
+\newcommand{\QQ}{\mathbf{Q}}		%mathbf
+\newcommand{\RR}{\mathbf{R}}
+\newcommand{\CC}{\mathbf{C}}
+%\newcommand{\FF}{\mathbf{F}}
+%\newcommand{\GG}{\mathbf{G}}
+
+
+\newcommand{\N}{\mathbb{N}}			%mathbb
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\one}{\mathbbm{1}}
+
+		
+\newcommand{\BB}{\mathscr{B}} 	%mathscr
+\newcommand{\DD}{\mathscr{D}} 
+\newcommand{\GG}{\mathscr{G}} 
+\newcommand{\KK}{\mathfrak{K}}
+\newcommand{\LL}{\mathscr{L}}
+%\newcommand{\l}{\mathscr{l}}
+\newcommand{\MM}{\mathscr{M}}  
+\newcommand{\NN}{\mathscr{N}}
+
+
+
+\newcommand{\A}{\mathcal{A}} 	%mathcal
+\newcommand{\HH}{\mathcal{H}} 		
+\newcommand{\FF}{\mathcal{F}}
+\newcommand{\PP}{\mathcal{P}}
+\newcommand{\ZZ}{\mathcal{Z}}
+\newcommand{\EE}{\mathcal{E}}
+\newcommand{\NNN}{\mathcal{N}}
+\newcommand{\UU}{\mathcal{U}} 
+\newcommand{\VV}{\mathcal{V}}
+\newcommand{\WW}{\mathcal{W}}
+
+
+\NewDocumentCommand{\innerprod}{ O{\cdot} O{\cdot} }{\left\langle #1, #2 \right\rangle}
+
+
+
+%-1	\part{part}
+%0	\chapter{chapter}
+%1	\section{section}
+%2	\subsection{subsection}
+%3	\subsubsection{subsubsection}
+%4	\paragraph{paragraph}
+%5	\subparagraph{subparagraph}
+%\part and \chapter are only available in report and book document classes.
+\newtheorem{theorem}{Theorem}[section]     
+% The command \newtheorem{theorem}{Theorem} has two parameters, the first one is the name of the environment that is defined, the second one is the word that will be printed, in boldface font, at the beginning of the environment. This has the additional parameter [section] that restarts the theorem counter at every new section.
+\newtheorem{corollary}[theorem]{Corollary}
+% A environment called corollary is created, the counter of this new environment will be reset every time a new theorem environment is used.
+\newtheorem{lemma}[theorem]{Lemma}
+% In this case, the even though a new environment called lemma is created, it will use the same counter as the theorem environment.
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{fact}{Fact (\textcolor{red}{need to prove})}[theorem]
+
+\theoremstyle{remark}
+% The command \theoremstyle{ } sets the styling for the numbered environment defined right below it.
+\newtheorem{remark}[theorem]{Remark}
+% The syntax of the command \newtheorem* is the same as the non-starred version, except for the counter parameters. In this example a new unnumbered environment called remark is created.
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{trick}[theorem]{Trick}
+
+\onehalfspacing
+
+\begin{document}	
+
+\section{template}
+\end{document}
