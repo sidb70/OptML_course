@@ -1,0 +1,273 @@
+\documentclass{article}
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage[plain]{algorithm}
+\usepackage{algpseudocode}
+\usepackage{amssymb}
+\usetikzlibrary{automata,positioning}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xparse}
+%
+% Basic Document Settings
+%
+
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+\linespread{1.1}
+
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName}
+\rhead{\hmwkTitle}
+\lfoot{\lastxmark}
+\cfoot{\thepage}
+
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\setlength\parindent{0pt}
+
+%
+% Create Problem Sections
+%
+
+\newcommand{\enterProblemHeader}[1]{
+    \nobreak\extramarks{}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+    \nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+}
+
+\newcommand{\exitProblemHeader}[1]{
+    \nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+    \stepcounter{#1}
+    \nobreak\extramarks{Problem \arabic{#1}}{}\nobreak{}
+}
+
+\setcounter{secnumdepth}{0}
+\newcounter{partCounter}
+\newcounter{homeworkProblemCounter}
+\setcounter{homeworkProblemCounter}{1}
+\numberwithin{homeworkProblemCounter}{section} % Add this line to reset question numbers within each section
+
+\nobreak\extramarks{Problem \arabic{homeworkProblemCounter}}{}\nobreak{}
+
+%
+% Homework Problem Environment
+%
+% This environment takes an optional argument. When given, it will adjust the
+% problem counter. This is useful for when the problems given for your
+% assignment aren't sequential. See the last 3 problems of this template for an
+% example.
+%
+\newenvironment{homeworkProblem}[1][-1]{
+    \ifnum#1>0
+        \setcounter{homeworkProblemCounter}{#1}
+    \fi
+    \section{Problem \arabic{homeworkProblemCounter}}
+    \setcounter{partCounter}{1}
+    \enterProblemHeader{homeworkProblemCounter}
+}{
+    \exitProblemHeader{homeworkProblemCounter}
+}
+\newcounter{subquestionCounter}[homeworkProblemCounter] % Reset per homework question
+\renewcommand{\thesubquestionCounter}{\alph{subquestionCounter})}
+
+\newenvironment{subquestion}{
+    \refstepcounter{subquestionCounter} % Increment the counter
+    \noindent\textbf{\thesubquestionCounter}~ % Display as a), b), etc.
+}{\par}
+
+%
+% Homework Details
+%   - Title
+%   - Due date
+%   - Class
+%   - Section/Time
+%   - Instructor
+%   - Author
+%
+
+\newcommand{\hmwkTitle}{EPFL CS439 Exercises}
+\newcommand{\subcaption}{I am not affiliated with EPFL, I am just solving the exercises for
+self-study. Course material: \href{https://github.com/epfml/OptML_course}{EPFL CS439 GitHub}}
+\newcommand{\hmwkAuthorName}{\textbf{Siddhartha Bhattacharya}}
+
+%
+% Title Page
+%
+
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\hmwkTitle}}\\
+	\vspace{0.1in}\large{\subcaption}\\
+	\vspace{3in}
+
+}
+
+\author{\hmwkAuthorName}
+\date{}
+
+\renewcommand{\part}[1]{\textbf{\large Part \Alph{partCounter}}\stepcounter{partCounter}\\}
+
+%
+% Various Helper Commands
+%
+
+%my shortcuts
+\newcommand{\ds}{\displaystyle}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}   					%absolute value
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}					%norm
+\newcommand{\tnorm}[1]{\left\lvert\lvert\lvert#1\right\rvert\rvert\rvert}		%tripple bar norm
+\newcommand{\iso}{\cong}									%isomorphism symbol 
+\newcommand{\lrangle}[1]{\left\langle#1\right\rangle}					%langle rangle
+\newcommand{\opint}[1]{\left(#1\right)}							%auto parentheses size
+\newcommand{\clint}[1]{\left[#1\right]}							%auto brackets size
+\newcommand{\mychi}{\raisebox{1pt}[1ex][1ex]{$\chi$}}				%fix chi bad subscripts
+\newcommand{\set}[1]{\left\{#1\right\}}		 					%auto curlys 
+\newcommand{\spanset}[1]{\text{span}\left\{#1\right\}}	
+\newcommand{\maxset}[1]{\text{max}\left\{#1\right\}}					%auto curlys on max
+\newcommand{\minset}[1]{\text{min}\left\{#1\right\}}					%auto curlys on min
+\newcommand{\cu}[1]{C_u^*\left(#1\right)}							%uniform roe algebra
+\newcommand{\cualg}[2]{\mathbb{C}_u^{#1}\left[#2\right]} 			% algebraic uniform roe algebra
+\newcommand{\wot}{\text{\scriptsize{WOT-}}}						%weak/Pettis integral
+\newcommand{\sub}{\subseteq}
+\newcommand{\domain}[1]{\mathbf{dom}(#1)}
+\newcommand{\super}{\supseteq}
+\newcommand{\h}{\hspace{.1 in}}								%horizontal spacing 
+\newcommand{\cl}[1]{\overline{#1}}								%overline
+\newcommand{\os}[2]{\overset{#1}{#2}}							%overset
+\newcommand{\cs}{\overset{\text{C-S}}{\leq}}
+\newcommand{\clmap}[1]{(\overline{\mathcal{A}})^{#1} \to \mathcal{V}}
+\newcommand{\RN}[1]{\textup{\uppercase\expandafter{\romannumeral#1}}}	%Roman Numerals in math mode
+\newcommand{\hmod}[2]{\left\langle#1\vert#2\right\rangle}
+\newcommand{\divides}{\bigm|}
+\newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
+\DeclareMathOperator{\range}{range}
+\DeclareMathOperator{\nul}{null}
+
+\newcommand{\N}{\mathbb{N}}			%mathbb
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\D}{\mathbb{D}}
+\newcommand{\one}{\mathbbm{1}}
+\newcommand{\F}{\mathbb{F}}
+% \newcommand{\L}{\mathcal{L}}
+
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+
+\newcommand{\fdeg}{\text{deg}} 
+\NewDocumentCommand{\innerprod}{ m m }{\left\langle #1, #2 \right\rangle}
+%\part and \chapter are only available in report and book document classes.
+\newtheorem{theorem}{Theorem}[section]     
+% The command \newtheorem{theorem}{Theorem} has two parameters, the first one is the name of the environment that is defined, the second one is the word that will be printed, in boldface font, at the beginning of the environment. This has the additional parameter [section] that restarts the theorem counter at every new section.
+\newtheorem{corollary}[theorem]{Corollary}
+% A environment called corollary is created, the counter of this new environment will be reset every time a new theorem environment is used.
+\newtheorem{lemma}[theorem]{Lemma}
+% In this case, the even though a new environment called lemma is created, it will use the same counter as the theorem environment.
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{fact}{Fact (\textcolor{red}{need to prove})}[theorem]
+
+\theoremstyle{remark}
+% The command \theoremstyle{ } sets the styling for the numbered environment defined right below it.
+\newtheorem{remark}[theorem]{Remark}
+% The syntax of the command \newtheorem* is the same as the non-starred version, except for the counter parameters. In this example a new unnumbered environment called remark is created.
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{trick}[theorem]{Trick}
+
+
+
+\begin{document}
+\maketitle
+\pagebreak
+\section{Week 1}
+
+\begin{homeworkProblem}
+	(Exercise 2) Prove Jensen's inequality.
+	\begin{lemma}[Jensen's Inequality]
+		Let $f$ be convex, $x_1, \ldots, x_m \in \domain{f}$, 
+		$\lambda_1, \ldots, \lambda_m \in \R_{\geq 0}$ such that $\sum_{i=1}^m \lambda_i = 1$. Then
+		\begin{equation}
+			f\left(\sum_{i=1}^m \lambda_i x_i\right) \leq \sum_{i=1}^m \lambda_i f(x_i)
+		\end{equation}
+		 
+	\end{lemma}
+	\begin{proof}
+		First, since $f$ is convex, we have that for any $x,y \in \domain{f}$ 
+		and $0 \leq \lambda \leq 1$, 
+		\[ f(\lambda x + (1-\lambda)y) \leq \lambda f(x) + (1-\lambda)f(y) \]
+		We proceed by induction. For the base case, let $k=2$ and $0 \leq \lambda_1, \lambda_2 \leq 1$ 
+		such that $\lambda_1 + \lambda_2 = 1$. Note that this implies $\lambda_2 = 1-\lambda_1$. 
+	
+		\begin{align*}
+			f\left(\sum_{i=1}^2 \lambda_i x_i\right) =& f(\lambda_1 x_1 + \lambda_2 x_2)\\
+			=& f(\lambda_1 x_1 + (1-\lambda_1)x_2)  
+		\end{align*}
+		Next, since $f$ is convex,
+		\begin{align*}
+			f(\lambda_1 x_1 + (1-\lambda_1)x_2)   \leq \lambda_1 f(x_1) + (1-\lambda_1)f(x_2)
+		\end{align*}
+		Now, substituting $\lambda_2 = (1-\lambda_1)$, we get that 
+		\begin{align*}
+			f(\lambda_1 x_1 + \lambda_2x_2)\leq \lambda_1 f(x_1) + \lambda_2f(x_2)
+		\end{align*}
+		So, (8) holds for $k=2$. Now, suppose for induction that (8) holds for an 
+		arbitrary $k \geq 2$. We show that it holds for $k+1$. Let 
+		$1 = \sum_{i=1}^{k+1}\lambda_i$. If we let $\beta = \sum_{i=1}^{k}\lambda_i$, 
+		then $\lambda_{k+1} = 1-\beta$. Using this, we can rewrite 
+		the convex combination $\sum_{i=1}^{k+1} \lambda_i x_i$ as:
+		\begin{align*}
+			\sum_{i=1}^{k+1}\lambda_i x_i =& \beta \left(\sum_{i=1}^k \frac{\lambda_i}{\beta} x_i \right)+ \lambda_{k+1}x_{k+1}\\
+			=& \beta \left(\sum_{i=1}^k \frac{\lambda_i}{\beta} x_i \right)+ (1-\beta)x_{k+1}\\
+		\end{align*}
+		And since $f$ is convex, 
+		\begin{align*}
+			f\left(\beta \left(\sum_{i=1}^k \frac{\lambda_i}{\beta} x_i \right)+ ( 1 - \beta)x_{k+1}\right) \leq& \beta f\left(\sum_{i=1}^k \frac{\lambda_i}{\beta}x_i\right) + (1-\beta)f(x_{k+1})\\
+		\end{align*}
+		And by inductive hypothesis on the first $k$ terms, we know that 
+		$f\left(\sum_{i=1}^k \frac{\lambda_i}{\beta} x_i\right) \leq \sum_{i=1}^k \frac{\lambda_i}{\beta} f(x_i)$,
+		which is a valid convex combination, since we defined $\beta = \sum_{i=1}^k \lambda_i$, implying that 
+		$\sum_{i=1}^k\frac{\lambda_i}{\beta} = \frac{\sum_{i=1}^k\lambda_i}{\beta} = \frac{\beta}{\beta }=1$.
+	
+		Thus, 
+		\begin{align*}
+			\beta f\left(\sum_{i=1}^k \frac{\lambda_i}{\beta}x_i\right) + (1-\beta)f(x_{k+1}) \leq \beta \left(\sum_{i=1}^k\frac{\lambda_i}{\beta}f(x_i) \right)+ (1-\beta)f(x_{k+1})
+		\end{align*}
+		And by the definition of the convex combination, $ \beta \left(\sum_{i=1}^k\frac{\lambda_i}{\beta}f(x_i) \right)+ (1-\beta)f(x_{k+1})= \sum_{i=1}^{k+1}\lambda_i f(x_i)$, we are done.
+	\end{proof}
+	
+\end{homeworkProblem}
+
+\begin{homeworkProblem}
+	(Exercise 4) Prove that the function $d_y : \R^d \to \R, \; x \mapsto \norm{x-y}^2$ is 
+	strictly convex for any $y \in \R^d$ (use Lemma 1.25)
+
+	\begin{proof}
+	First, we show that $d_y$ is twice continually differentiable.
+	Let $x \in \R^d$. Then,
+	\begin{align*}
+		d_y(x) =& \norm{x-y}^2 = (x-y)^T(x-y) = x^Tx - 2x^Ty + y^Ty\\
+		\nabla d_y(x) =& 2x-2y\\
+		\nabla^2 d_y(x) =& 2I
+	\end{align*}
+	Thus, $d_y$ is twice continually differentiable. Furthermore, 
+	$z^T \nabla^2 f(x) z = 2z^Tz > 0$ for all $z \neq 0$, so $\nabla^2 f(x)$ is positive definite. 
+	Since $f(x)$ is twice continually differentiable and $\nabla^2 f(x)$ is positive definite,
+	$f(x)$ is strictly convex, by Lemma 1.25.
+	\end{proof}
+\end{homeworkProblem}
+\end{document}

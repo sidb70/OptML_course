@@ -7,6 +7,8 @@
 
 \usepackage{amsmath}
 \usepackage{amsthm}
+\usepackage{color}
+\usepackage{setspace}
 \usepackage{mathrsfs}	%for \mathscr{} script
 \usepackage{amssymb}
 \usepackage{amscd}
@@ -16,7 +18,7 @@
 \usepackage{tikz-cd}
 \usetikzlibrary{matrix}	%diagram drawing using tik
 \usepackage{verbatim}
-
+\usepackage{titling}
 \usepackage{graphicx}	%insert images
 \graphicspath{ {pics/} }	%local image folder
 \usepackage{wrapfig}	%figure wrapping for text around pictures
@@ -73,6 +75,13 @@
 \newcommand{\divides}{\bigm|}
 \newcommand{\Mod}[1]{\ (\mathrm{mod}\ #1)}
 
+% Custom command for subtitle
+\newcommand{\subtitle}[1]{%
+  \posttitle{%
+    \par\end{center}
+    \begin{center}\large#1\end{center}
+    \vskip0.5em}%
+}
 \DeclareMathOperator{\Dom}{Dom}
 \DeclareMathOperator{\dom}{dom}
 \DeclareMathOperator{\gra}{gra}
@@ -176,8 +185,12 @@
 
 \onehalfspacing
 
+\title{EPFL CS439: Optimization for Machine Learning}
+\subtitle{Note: I am not affiliated with EPFL. These notes are based on the online \href{https://github.com/epfml/OptML_course}{course material} provided by Prof. Martin Jaggi.}
+\author{Siddhartha Bhattacharya}
 \begin{document}	
-
+\maketitle
+\tableofcontents
 
 
 \subsection{High Level Overview}
@@ -326,7 +339,7 @@ For convex optimization problems, all algorithms
 	First, since $f$ is convex, we have that for any $x,y \in \domain{f}$ 
 	and $0 \leq \lambda \leq 1$, 
 	\[ f(\lambda x + (1-\lambda)y) \leq \lambda f(x) + (1-\lambda)f(y) \]
-	We proceed by induction. For the base case, let $k=2$ and $0 \leq \lambda_1, \lambda_2$ 
+	We proceed by induction. For the `base case', let $k=2$ and $0 \leq \lambda_1, \lambda_2 \leq 1$ 
 	such that $\lambda_1 + \lambda_2 = 1$. Note that this implies $\lambda_2 = 1-\lambda_1$. 
 
 	\begin{align*}

@@ -106,3 +106,5 @@ ENV/
 *.log
 *.fls
 *.fdb_latexmk
+*.toc
+*.gz
